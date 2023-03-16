@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Produção</title>
+    <title>Produção- Consulta</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   </head>
   <header>
@@ -55,37 +55,63 @@
   </header>
 
   <main class="container">
-  <div class="d-flex flex-wrap justify-content-center align-items-start flex-column">
+  <div class="d-flex flex-wrap mt-3 flex-column">
       <div class="w-100 my-4 mt-0">
         <h1 class="titulo text-center">Produção</h1>
+        <div align="center"><hr width="60px" noshade></div>
+        <h2 class="titulo2">Consulta</h2>
+              
       </div>
 
-      <div class="caixa w-100">
-          <div>
-              <input type="text">
-          </div>
-
-          <div>
-            <a href="Inscrever.html" class="btn btn-lg btn-outline-dark">  
-            Consultar
-            <img class="mt-3" src="/img/Visualizar.png"/>
-          </a>
-          </div>
-        
-          <div>
-              <a href="Inscrever.html" class="btn btn-lg btn-outline-dark">  
-              Atualizar
-              <img class="mt-3" src="/img/editar.png" />
-            </a>
-          </div>
-
-          <div>
-            <a href="Inscrever.html" class="btn btn-lg btn-outline-dark">  
-            Deletar
-            <img class="mt-3" src="/img/deletar.png" />
-          </a>
-          </div>
+    
+      <div class="infos">
+        <label for="consultar">Lote:
+          <input size="25px" type="search" id = "consultar" name = "consultar" placeholder="B23" style="text-align: center;" autofocus>
+          <button>Buscar</button>
+        </label>
       </div>
+     
+      <div class="caixa">
+        <div class="infos">
+          <label for="og_prod">OG:
+            <input type="text" id="og_prod" name="og_prod" disabled>
+          </label>
+        </div>
+
+        <div class="infos">
+          <label for="fg_prod">FG:
+            <input type="text" id="fg_prod" name="fg_prod" disabled>
+          </label>
+        </div>
+
+        <div class="infos">
+          <label for="fg_prod">Data Produção:
+            <input type="text" id="fg_prod" name="fg_prod" disabled>
+          </label>
+        </div>
+
+        <div class="infos">
+          <label for="fg_prod">Rendimento:
+            <input type="text" id="fg_prod" name="fg_prod" disabled>
+          </label>
+        </div>
+
+        <div class="infos">
+          <label for="fg_prod">Fim Fermentação:
+            <input type="text" id="fg_prod" name="fg_prod" disabled>
+          </label>
+        </div>
+
+        <div class="infos">
+          <label for="fg_prod">Fim maturação:
+            <input type="text" id="fg_prod" name="fg_prod" disabled>
+          </label>
+        </div>
+
+      </div>
+      
+    </div>
+      
   </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
@@ -126,6 +152,13 @@
       font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
   }
+  .titulo2{
+    text-align: center;
+      font-size: 1.5rem;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      margin-top: 4px;
+  }
   .container {
   display: flex;
   justify-content: center;
@@ -138,10 +171,10 @@
 
   .caixa{
     justify-content: center;
-    align-items: center;
+    align-items:end;
     flex-wrap: wrap;
-    flex-direction: row;
-    gap: 25px;
+    flex-direction: column;
+    gap: 5px;
     display: flex;
   }
 
@@ -174,6 +207,15 @@
   .child {
   width: 200px;
   height: 180px;
+  }
+
+  .infos{
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    flex-wrap: wrap;
+    flex-direction: column;
+    display: flex;
   }
   </style>
 
