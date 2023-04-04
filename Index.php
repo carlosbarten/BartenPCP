@@ -1,3 +1,32 @@
+<?php
+
+  session_start();
+
+  require_once("conexao.php");  
+
+  if(isset($_POST['inputUsuario']) && isset($_POST['inputSenha'])){
+
+    $usuario = $_POST['inputUsuario'];
+    $senha = $_POST['inputSenha'];
+
+    $sql = "SELECT * FROM usuarios WHERE email = :usuario AND senha = :senha";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':usuario', $usuario);
+    $stmt->bindParam(':senha', $senha);
+    $stmt->execute();
+
+    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if($resultado){
+      $_SESSION['usuario'] = $resultado['email'];
+      header("Location: ./homepage.html");
+    }else{
+      echo "Usuário ou senha inválidos!";
+    }
+  }
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,27 +39,29 @@
     <div class="container mt-5">
       <div class="row align-items-center">
         </div class="col-md-10 mx-auto col-lg-5">
-          <form class="p-4 p-md-5 border rounded-4 bg-light">
+          <form action="" method="POST" class="p-4 p-md-5 border rounded-4 bg-light">
             <div class="col-md-10 mx-auto col-lg-5 mb-4">
               <img src="/img/page2.png">
             
+            </div>
             <div class="form-floating mb-4 mt-3">
               <input
                 type="text"
-                class="form-control" id="inputUsuario" placeholder="Usuário"/>
+                class="form-control" id="inputUsuario" name="inputUsuario" placeholder="Usuário"/>
               <label for="inputUsuario">Usuário</label>
             </div>
             <div class="form-floating mb-4">
               <input
                 type="password"
-                class="form-control" id="inputSenha" placeholder="Senha"/>
+                class="form-control" id="inputSenha" name="inputSenha" placeholder="Senha"/>
               <label for="inputSenha">Senha</label>
             </div>
-          
+                                
             <p class="text-center"><button class="btn btn-lg btn-success w-50" type="submit">Entrar</button></p>
             
             <p class="text-center"><a href="./usuarios/Cadastrar_Usuário_no_login.html">Criar Conta</a></p>
           </form>
+
         </div>
       </div>
     </div>
