@@ -9,7 +9,7 @@
   <header>
     <nav class="navbar bg-light fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="../HomePage.html">PCP Barten</a>
+        <a class="navbar-brand" href="../HomePage.php">PCP Barten</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,31 +21,31 @@
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../HomePage.html">Início</a>
+                <a class="nav-link active" aria-current="page" href="../HomePage.php">Início</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.html">Usuários</a>
+                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.php">Usuários</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="producao.html">Produção</a>
+                <a class="nav-link active" aria-current="page" href="producao.php">Produção</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../receitas/receitas.html">Receitas</a>
+                <a class="nav-link active" aria-current="page" href="../receitas/receitas.php">Receitas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.html">Pedidos</a>
+                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.php">Pedidos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.html">Matéria Prima</a>
+                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.php">Matéria Prima</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../estoque/estoque.html">Estoque</a>
+                <a class="nav-link active" aria-current="page" href="../estoque/estoque.php">Estoque</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../inventario/inventario.html">Inventário</a>
+                <a class="nav-link active" aria-current="page" href="../inventario/inventario.php">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.html">Sair</a>
+                <a class="nav-link disable" aria-current="page" href="../Index.php">Sair</a>
               </li>
             </ul>
           </div>
@@ -89,7 +89,7 @@
               <button class="botao btn btn-lg btn-success w-150" type="submit">Cadastrar</button>
             </div>
             <div class="d-grid gap-3 col-6 mx-auto mt-2">
-              <p class="botao text-center"><a href="usuarios.html">Cancelar</a></p>
+              <p class="botao text-center"><a href="usuarios.php">Cancelar</a></p>
             </div>
 
 

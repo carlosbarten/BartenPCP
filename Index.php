@@ -1,7 +1,5 @@
 <?php
 
-  session_start();
-
   require_once("conexao.php");  
 
   if(isset($_POST['inputUsuario']) && isset($_POST['inputSenha'])){
@@ -18,10 +16,11 @@
     $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if($resultado){
-      $_SESSION['usuario'] = $resultado['email'];
-      header("Location: ./homepage.html");
+      session_start();
+      $_SESSION['usuario'] = $usuario;
+      header('Location: homepage.php');
     }else{
-      echo "Usuário ou senha inválidos!";
+      echo "Usuário ou senha inválidos";
     }
   }
 
@@ -59,9 +58,9 @@
                                 
             <p class="text-center"><button class="btn btn-lg btn-success w-50" type="submit">Entrar</button></p>
             
-            <p class="text-center"><a href="./usuarios/Cadastrar_Usuário_no_login.html">Criar Conta</a></p>
+            <p class="text-center"><a href="./usuarios/Cadastrar_Usuário_no_login.php">Criar Conta</a></p>
           </form>
-
+          
         </div>
       </div>
     </div>

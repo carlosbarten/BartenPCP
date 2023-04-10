@@ -1,3 +1,38 @@
+<?php
+
+include_once("../conexao.php");
+
+if(isset($_SESSION)){
+  session_start();
+}
+
+if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['inputTelefone']) && isset($_POST['inputSenha'])){
+
+  $nome = $_POST['inputNome'];
+  $email = $_POST['inputEmail'];
+  $telefone = $_POST['inputTelefone'];
+  $senha = $_POST['inputSenha'];
+
+  $sql = "INSERT INTO usuarios (nome, email, telefone, senha) VALUES (:nome, :email, :telefone, :senha)";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':nome', $nome);
+  $stmt->bindParam(':email', $email);
+  $stmt->bindParam(':telefone', $telefone);
+  $stmt->bindParam(':senha', $senha);
+  $stmt->execute();
+
+  $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if($resultado){
+    $_SESSION['usuario'] = $resultado['email'];
+    header("Location: ../Index.php");
+  }else{
+    echo "Usuário ou senha inválidos!";
+  }
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -9,7 +44,7 @@
   <header>
     <nav class="navbar bg-light fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="../Index.html">PCP Barten</a>
+        <a class="navbar-brand" href="../Index.php">PCP Barten</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,7 +56,7 @@
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../Index.html">Sair</a>
+                <a class="nav-link active" aria-current="page" href="../Index.php">Sair</a>
               </li>
             </ul>
           </div>
@@ -34,7 +69,7 @@
     <div class="container mt-5 pt-5 p-md-5">
       <div class="row align-items-center">
         </div class="col-md-10 mx-auto col-lg-4">
-          <form class="p-4 p-md-5 border rounded-4 bg-light">
+          <form action="" method="POST" class="p-4 p-md-5 border rounded-4 bg-light">
             <h1 class="titulo">Cadastro de Usuário</h1>
             <br>
             <div class="input p-md-1">
@@ -65,7 +100,7 @@
               <button class="botao btn btn-lg btn-success w-150" type="submit">Cadastrar</button>
             </div>
             <div class="d-grid gap-3 col-6 mx-auto mt-2">
-              <p class="botao text-center"><a href="../Index.html">Cancelar</a></p>
+              <p class="botao text-center"><a href="../Index.php">Cancelar</a></p>
             </div>
 
 
