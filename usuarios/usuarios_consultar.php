@@ -1,5 +1,33 @@
+<?php
+session_start();
+include_once("../conexao.php");
+
+//variaveis recebendo valores vazios para não dar erro de parametro de consulta
+$nomeconsulta = '';
+  $emailconsulta = '';
+  $telefoneconsulta = '';
+
+//verificando se o botão consultar foi clicado
+if(isset($_POST['consultar'])){
+
+  // concatenado % para fazer a consulta com o like
+  $nome = $_POST['consultar'].'%';
+  $sql = "SELECT * FROM usuarios WHERE nome like :nome";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':nome', $nome);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
+
+
+// atribuindo valores do bd para preencher no input
+  $nomeconsulta = $usuario["nome"];
+  $emailconsulta = $usuario["email"];
+  $telefoneconsulta = $usuario["telefone"];
+}
+?>
+
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,28 +93,31 @@
 
     
       <div class="infos">
-        <label for="consultar">Nome:
-          <input size="25px" type="search" id = "consultar" name = "consultar" placeholder="José" style="text-align: center;" autofocus>
-          <button>Buscar</button>
-        </label>
+        <form action="" method="post">
+          <label for="consultar">Nome:
+            <input value = "<?php echo $nomeconsulta ?>" size="25px" type="search" id = "consultar" name = "consultar" placeholder="José" style="text-align: center;" autofocus>
+            <button>Buscar</button>
+          </label>
+        </form>
+        
       </div>
      
       <div class="caixa">
         <div class="infos">
           <label for="og_prod">Nome:
-            <input type="text" id="og_prod" name="og_prod" disabled>
+            <input value = "<?php echo $nomeconsulta ?>" type="text" id="og_prod" name="nome" disabled>
           </label>
         </div>
 
         <div class="infos">
           <label for="fg_prod">E-mail:
-            <input type="text" id="fg_prod" name="fg_prod" disabled>
+            <input value = "<?php echo $emailconsulta ?>" type="text" id="fg_prod" name="email" disabled>
           </label>
         </div>
 
         <div class="infos">
           <label for="fg_prod">Telefone:
-            <input type="text" id="fg_prod" name="fg_prod" disabled>
+            <input value = "<?php echo $telefoneconsulta ?>" type="text" id="fg_prod" name="infos" disabled>
           </label>
         </div>
 

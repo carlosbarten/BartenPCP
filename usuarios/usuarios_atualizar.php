@@ -1,3 +1,33 @@
+<?php
+session_start();
+include_once("../conexao.php");
+
+//variaveis recebendo valores vazios para não dar erro de parametro de consulta
+  $nome_atualizar = '';
+  $email_atualizar = '';
+  $telefone_atualizar = '';
+  $senha_atualizar = '';
+
+//verificando se o botão consultar foi clicado
+if(isset($_POST['consultar'])){
+
+  // concatenado % para fazer a consulta com o like
+  $nome = $_POST['consultar'].'%';
+  $sql = "SELECT * FROM usuarios WHERE nome like :nome";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':nome', $nome);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
+
+
+// atribuindo valores do bd para preencher no input
+  $nome_atualizar = $usuario["nome"];
+  $email_atualizar = $usuario["email"];
+  $telefone_atualizar = $usuario["telefone"];
+  $senha_atualizar = $usuario["senha"];
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -62,36 +92,37 @@
         <h2 class="titulo2">Atualizar registro</h2>
               
       </div>
-      
-      <div class="infos">
-        <label for="consultar">Nome:
-          <input size="25px" type="search" id = "consultar" name = "consultar" placeholder="José" style="text-align: center;" autofocus>
-          <button>Buscar</button>
-        </label>
-      </div>
+      <form action="" method="post">
+        <div class="infos">
+          <label for="consultar">Nome:
+            <input value = "<?php echo $nome_atualizar ?>" size="25px" type="search" id = "consultar" name = "consultar" placeholder="José" style="text-align: center;" autofocus>
+            <button>Buscar</button>
+          </label>
+        </div>
+      </form>
      
       <div class="caixa">
         <div class="infos">
-          <label for="Nome">Nome:
-            <input type="text" id="Nome" name="Nome">
+          <label  for="Nome">Nome:
+            <input value = "<?php echo $nome_atualizar ?>" type="text" id="Nome" name="Nome">
           </label>
         </div>
 
         <div class="infos">
           <label for="email">E-mail:
-            <input type="text" id="email" name="email">
+            <input value = "<?php echo $email_atualizar ?>" type="text" id="email" name="email">
           </label>
         </div>
 
         <div class="infos">
           <label for="telefone">Telefone:
-            <input type="text" id="telefone" name="telefone">
+            <input value = "<?php echo $telefone_atualizar ?>" type="text" id="telefone" name="telefone">
           </label>
         </div>
 
         <div class="infos">
           <label for="senha">Senha:
-            <input type="password" id="senha" name="senha">
+            <input value = "<?php echo $senha_atualizar ?>" type="password" id="senha" name="senha">
           </label>
         </div>
 
