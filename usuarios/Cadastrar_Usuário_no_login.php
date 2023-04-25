@@ -1,10 +1,6 @@
 <?php
-
+session_start();
 include_once("../conexao.php");
-
-if(isset($_SESSION)){
-  session_start();
-}
 
 if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['inputTelefone']) && isset($_POST['inputSenha'])){
 
@@ -12,26 +8,19 @@ if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['in
   $email = $_POST['inputEmail'];
   $telefone = $_POST['inputTelefone'];
   $senha = $_POST['inputSenha'];
-
-  $sql = "INSERT INTO usuarios (nome, email, telefone, senha) VALUES (:nome, :email, :telefone, :senha)";
+  $sql = "INSERT INTO usuarios (nome, email, telefone, senha) VALUES ('$nome', '$email', '$telefone', '$senha')";
   $stmt = $pdo->prepare($sql);
-  $stmt->bindParam(':nome', $nome);
-  $stmt->bindParam(':email', $email);
-  $stmt->bindParam(':telefone', $telefone);
-  $stmt->bindParam(':senha', $senha);
-  $stmt->execute();
+  $success = $stmt->execute();
 
-  $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-
-  if($resultado){
-    $_SESSION['usuario'] = $resultado['email'];
+  if($success){
     header("Location: ../Index.php");
   }else{
-    echo "Usuário ou senha inválidos!";
+    echo "Erro ao cadastrar usuário";
   }
-}
+} 
 
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -76,25 +65,25 @@ if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['in
               <span class="input-group-text">Nome Completo</span>
               <input
               type="text"
-              class="form-control" id="inputNome" placeholder="Ex: José..."/>
+              class="form-control" id="inputNome" name="inputNome" placeholder="Ex: José..."/>
             </div>
             <div class="input p-md-1">
-              <span class="input-group-text">E-mail</span>
+              <span class="input-group-text" >E-mail</span>
               <input
               type="email"
-              class="form-control" id="inputEmail" placeholder="Ex:jose@gmail.com"/>
+              class="form-control" name="inputEmail" id="inputEmail" placeholder="Ex:jose@gmail.com"/>
             </div>
             <div class="input p-md-1">
               <span class="input-group-text">Telefone</span>
               <input
               type="number"
-              class="form-control" id="inputTelefone" placeholder="(xx) xxxxx-xxxx"/>
+              class="form-control" name="inputTelefone" id="inputTelefone" placeholder="(xx) xxxxx-xxxx"/>
             </div> 
             <div class="input p-md-1">
               <span class="input-group-text">Senha</span>
               <input
               type="password"
-              class="form-control" id="inputSenha"/>
+              class="form-control" name="inputSenha" id="inputSenha"/>
             </div>
             <div class="d-grid gap-3 col-6 mx-auto mt-3">
               <button class="botao btn btn-lg btn-success w-150" type="submit">Cadastrar</button>

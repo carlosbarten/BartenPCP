@@ -1,3 +1,27 @@
+<?php
+session_start();
+include_once("../conexao.php");
+
+if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['inputTelefone']) && isset($_POST['inputSenha'])){
+
+  $nome = $_POST['inputNome'];
+  $email = $_POST['inputEmail'];
+  $telefone = $_POST['inputTelefone'];
+  $senha = $_POST['inputSenha'];
+  $sql = "INSERT INTO usuarios (nome, email, telefone, senha) VALUES ('$nome', '$email', '$telefone', '$senha')";
+  $stmt = $pdo->prepare($sql);
+  $success = $stmt->execute();
+
+  if(!$success){
+    echo "Cadastrado com sucesso!";
+  }else{
+
+    echo "Erro ao cadastrar usuário";
+  }
+} 
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -58,32 +82,32 @@
     <div class="container mt-5 pt-5 p-md-5">
       <div class="row align-items-center">
         </div class="col-md-10 mx-auto col-lg-4">
-          <form class="p-4 p-md-5 border rounded-4 bg-light">
+          <form action="" method="POST" class="p-4 p-md-5 border rounded-4 bg-light">
             <h1 class="titulo">Cadastro de Usuário</h1>
             <br>
             <div class="input p-md-1">
               <span class="input-group-text">Nome Completo</span>
               <input
               type="text"
-              class="form-control" id="inputNome" placeholder="Ex: José..."/>
+              class="form-control" name="inputNome" id="inputNome" placeholder="Ex: José..."/>
             </div>
             <div class="input p-md-1">
               <span class="input-group-text">E-mail</span>
               <input
               type="email"
-              class="form-control" id="inputEmail" placeholder="Ex:jose@gmail.com"/>
+              class="form-control" name="inputEmail" id="inputEmail" placeholder="Ex:jose@gmail.com"/>
             </div>
             <div class="input p-md-1">
               <span class="input-group-text">Telefone</span>
               <input
               type="number"
-              class="form-control" id="inputTelefone" placeholder="(xx) xxxxx-xxxx"/>
+              class="form-control" name="inputTelefone" id="inputTelefone" placeholder="(xx) xxxxx-xxxx"/>
             </div> 
             <div class="input p-md-1">
               <span class="input-group-text">Senha</span>
               <input
               type="password"
-              class="form-control" id="inputSenha"/>
+              class="form-control" name="inputSenha" id="inputSenha"/>
             </div>
             <div class="d-grid gap-3 col-6 mx-auto mt-3">
               <button class="botao btn btn-lg btn-success w-150" type="submit">Cadastrar</button>
@@ -91,8 +115,6 @@
             <div class="d-grid gap-3 col-6 mx-auto mt-2">
               <p class="botao text-center"><a href="usuarios.php">Cancelar</a></p>
             </div>
-
-
           </form>
           
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
