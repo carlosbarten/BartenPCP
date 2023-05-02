@@ -1,11 +1,13 @@
 <?php
 session_start();
 include_once("../conexao.php");
+error_reporting(0);
+ini_set('display_errors', 0);
 
 //variaveis recebendo valores vazios para não dar erro de parametro de consulta
 $nomeconsulta = '';
-  $emailconsulta = '';
-  $telefoneconsulta = '';
+$emailconsulta = '';
+$telefoneconsulta = '';
 
 //verificando se o botão consultar foi clicado
 if(isset($_POST['consultar'])){
@@ -18,12 +20,15 @@ if(isset($_POST['consultar'])){
   $stmt->execute();
   $usuario = $stmt->fetch();
 
-
 // atribuindo valores do bd para preencher no input
   $nomeconsulta = $usuario["nome"];
   $emailconsulta = $usuario["email"];
   $telefoneconsulta = $usuario["telefone"];
 }
+  #se consulta estiver vazia, exibe mensagem de erro
+  if(empty($usuario)){
+    echo "<script>alert('Usuário não encontrado!');</script>";
+  }
 ?>
 
 <!doctype html>

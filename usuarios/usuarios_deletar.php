@@ -1,3 +1,39 @@
+<?php
+session_start();
+include_once("../conexao.php");
+
+//variaveis recebendo valores vazios para não dar erro de parametro de consulta
+  $nome_atualizar = '';
+  $email_atualizar = '';
+  $telefone_atualizar = '';
+
+//verificando se o botão consultar foi clicado
+if(isset($_POST['consultar'])){
+
+  // concatenado % para fazer a consulta com o like
+  $nome = $_POST['consultar'].'%';
+  $sql = "SELECT * FROM usuarios WHERE nome like :nome";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':nome', $nome);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
+
+
+// atribuindo valores do bd para preencher no input
+  $nome_atualizar = $usuario["nome"];
+  $email_atualizar = $usuario["email"];
+  $telefone_atualizar = $usuario["telefone"];
+}
+
+if(isset($_POST["botao_salvar"])){
+  $nome_atualizar = $_POST["nome_atualizado2"];
+  $sql = "DELETE FROM usuarios WHERE nome = '$nome_atualizar'";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute();
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -64,37 +100,41 @@
       </div>
 
     
-      <div class="infos">
-        <label for="consultar">Nome:
-          <input size="25px" type="search" id = "consultar" name = "consultar" placeholder="José" style="text-align: center;" autofocus>
-          <button>Buscar</button>
-        </label>
-      </div>
+      <form action="" method="post">
+        <div class="infos">
+          <label for="consultar">Nome:
+            <input value = "<?php echo $nome_atualizar ?>" size="25px" type="search" id = "consultar" name = "consultar" placeholder="José" style="text-align: center;" autofocus>
+            <button>Buscar</button>
+          </label>
+        </div>
+      </form>
      
-      <div class="caixa">
-        <div class="infos">
-          <label for="og_prod">Nome:
-            <input type="text" id="og_prod" name="og_prod" disabled>
-          </label>
+      <form action="" method="post">
+        <div class="caixa">
+          <div class="infos">
+            <label  for="Nome">Nome:
+              <input value = "<?php echo $nome_atualizar ?>" type="text" id="nome" name="nome" disabled>
+            </label>
+          </div>
+
+          <div class="infos">
+            <label for="email">E-mail:
+              <input value = "<?php echo $email_atualizar ?>" type="text" id="email" name="email" disabled>
+            </label>
+          </div>
+
+          <div class="infos">
+            <label for="telefone">Telefone:
+              <input value = "<?php echo $telefone_atualizar ?>" type="text" id="telefone" name="telefone" disabled>
+            </label>
+          </div>
+          
+          <div class="container-fluid mt-3">
+          <input class="btn btn-lg btn-danger" id="botao_salvar" name="botao_salvar" type="submit" value="Apagar">
         </div>
 
-        <div class="infos">
-          <label for="fg_prod">E-mail:
-            <input type="text" id="fg_prod" name="fg_prod" disabled>
-          </label>
-        </div>
-
-        <div class="infos">
-          <label for="fg_prod">Telefone:
-            <input type="text" id="fg_prod" name="fg_prod" disabled>
-          </label>
-        </div>
-
-        <div class="container-fluid mt-3">
-          <input class="btn btn-lg btn-danger" type="submit" value="Apagar">
-        </div>
-
-      </div>
+          <input type="hidden" name="nome_atualizado2" value="<?php echo $nome_atualizar ?>">
+      </form>
       
     </div>
       

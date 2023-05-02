@@ -12,10 +12,9 @@ if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['in
   $stmt = $pdo->prepare($sql);
   $success = $stmt->execute();
 
-  if(!$success){
+  if($success){
     echo "Cadastrado com sucesso!";
   }else{
-
     echo "Erro ao cadastrar usuário";
   }
 } 
@@ -89,13 +88,13 @@ if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['in
               <span class="input-group-text">Nome Completo</span>
               <input
               type="text"
-              class="form-control" name="inputNome" id="inputNome" placeholder="Ex: José..."/>
+              class="form-control" name="inputNome" id="inputNome" placeholder="Ex: José..." required/>
             </div>
             <div class="input p-md-1">
               <span class="input-group-text">E-mail</span>
               <input
               type="email"
-              class="form-control" name="inputEmail" id="inputEmail" placeholder="Ex:jose@gmail.com"/>
+              class="form-control" name="inputEmail" id="inputEmail" placeholder="Ex:jose@gmail.com" required/>
             </div>
             <div class="input p-md-1">
               <span class="input-group-text">Telefone</span>
@@ -107,7 +106,7 @@ if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['in
               <span class="input-group-text">Senha</span>
               <input
               type="password"
-              class="form-control" name="inputSenha" id="inputSenha"/>
+              class="form-control" name="inputSenha" id="inputSenha" required/>
             </div>
             <div class="d-grid gap-3 col-6 mx-auto mt-3">
               <button class="botao btn btn-lg btn-success w-150" type="submit">Cadastrar</button>

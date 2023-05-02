@@ -26,6 +26,18 @@ if(isset($_POST['consultar'])){
   $telefone_atualizar = $usuario["telefone"];
   $senha_atualizar = $usuario["senha"];
 }
+
+if(isset($_POST["botao_salvar"])){
+  $nome_atualizar = $_POST["nome_atualizado2"];
+  $nome1 = $_POST["nome"];
+  $email = $_POST["email"];
+  $telefone = $_POST["telefone"];
+  $senha = $_POST["senha"];
+  $sql = "UPDATE usuarios SET nome = '$nome1', email = '$email', telefone = '$telefone', senha = '$senha' WHERE nome = '$nome_atualizar'";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute();
+}
+
 ?>
 
 <!doctype html>
@@ -100,35 +112,37 @@ if(isset($_POST['consultar'])){
           </label>
         </div>
       </form>
-     
-      <div class="caixa">
-        <div class="infos">
-          <label  for="Nome">Nome:
-            <input value = "<?php echo $nome_atualizar ?>" type="text" id="Nome" name="Nome">
-          </label>
-        </div>
+     <form action="" method="post">
+        <div class="caixa">
+          <div class="infos">
+            <label  for="Nome">Nome:
+              <input value = "<?php echo $nome_atualizar ?>" type="text" id="nome" name="nome">
+            </label>
+          </div>
 
-        <div class="infos">
-          <label for="email">E-mail:
-            <input value = "<?php echo $email_atualizar ?>" type="text" id="email" name="email">
-          </label>
-        </div>
+          <div class="infos">
+            <label for="email">E-mail:
+              <input value = "<?php echo $email_atualizar ?>" type="text" id="email" name="email">
+            </label>
+          </div>
 
-        <div class="infos">
-          <label for="telefone">Telefone:
-            <input value = "<?php echo $telefone_atualizar ?>" type="text" id="telefone" name="telefone">
-          </label>
-        </div>
+          <div class="infos">
+            <label for="telefone">Telefone:
+              <input value = "<?php echo $telefone_atualizar ?>" type="text" id="telefone" name="telefone">
+            </label>
+          </div>
 
-        <div class="infos">
-          <label for="senha">Senha:
-            <input value = "<?php echo $senha_atualizar ?>" type="password" id="senha" name="senha">
-          </label>
-        </div>
+          <div class="infos">
+            <label for="senha">Senha:
+              <input value = "<?php echo $senha_atualizar ?>" type="password" id="senha" name="senha">
+            </label>
+          </div>
 
-        <div class="container-fluid mt-3">
-          <input class="btn btn-lg btn-primary" type="submit" style="background-color: green; border: green;" value="Salvar">
-        </div>
+          <div class="container-fluid mt-3">
+            <input id="botao_salvar" name="botao_salvar" class="btn btn-lg btn-primary" type="submit" style="background-color: green; border: green;" value="Salvar">
+          </div>
+
+          <input type="hidden" name="nome_atualizado2" value="<?php echo $nome_atualizar ?>">
       </form>
         
     </div>
