@@ -1,6 +1,8 @@
 <?php
 session_start();
 include_once("../conexao.php");
+error_reporting(0);
+ini_set('display_errors', 0);
 
 //variaveis recebendo valores vazios para não dar erro de parametro de consulta
   $nome_atualizar = '';
@@ -36,6 +38,10 @@ if(isset($_POST["botao_salvar"])){
   $sql = "UPDATE usuarios SET nome = '$nome1', email = '$email', telefone = '$telefone', senha = '$senha' WHERE nome = '$nome_atualizar'";
   $stmt = $pdo->prepare($sql);
   $stmt->execute();
+}
+ #se consulta estiver vazia, exibe mensagem de erro
+ if(empty($usuario) && $_POST['consultar'] != ''){
+  echo "<script>alert('Usuário não encontrado!');</script>";
 }
 
 ?>

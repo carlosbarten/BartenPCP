@@ -5,9 +5,9 @@ error_reporting(0);
 ini_set('display_errors', 0);
 
 //variaveis recebendo valores vazios para não dar erro de parametro de consulta
-$nomeconsulta = '';
-$emailconsulta = '';
-$telefoneconsulta = '';
+// $nomeconsulta = '';
+// $emailconsulta = '';
+// $telefoneconsulta = '';
 
 //verificando se o botão consultar foi clicado
 if(isset($_POST['consultar'])){
@@ -26,9 +26,9 @@ if(isset($_POST['consultar'])){
   $telefoneconsulta = $usuario["telefone"];
 }
   #se consulta estiver vazia, exibe mensagem de erro
-  if(empty($usuario)){
-    echo "<script>alert('Usuário não encontrado!');</script>";
-  }
+    if(empty($usuario) && $_POST['consultar'] != ''){
+      echo "<script>alert('Usuário não encontrado!');</script>";
+    }
 ?>
 
 <!doctype html>
