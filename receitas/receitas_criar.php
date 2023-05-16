@@ -1,5 +1,38 @@
+<?php
+session_start();
+include_once("../conexao.php");
+error_reporting(0);
+ini_set('display_errors', 0);
+
+if(isset($_POST['Nome']) && isset($_POST['Volume']) && isset($_POST['ABV']) && isset($_POST['Amargor'])){
+
+  $nome = $_POST['Nome'];
+  $volume = $_POST['Volume'];
+  $abv = $_POST['ABV'];
+  $Amargor = $_POST['Amargor'];
+  $cor = $_POST['cor'];
+  $mostura = $_POST['mostura'];
+  $lavagem = $_POST['lavagem'];
+  $fervura = $_POST['fervura'];
+  $fermentacao = $_POST['fermentacao'];
+  $og_rec = $_POST['og_rec'];
+  $fg_rec = $_POST['fg_rec'];
+  $temp_ferm = $_POST['temp_ferm'];
+  $tempo_mat = $_POST['tempo_mat'];
+  $sql = "INSERT INTO tipo_cerveja (Nome, info_volume, info_abv, info_amargor, info_cor, desc_mostura, desc_lavagem, desc_fervura, desc_fermentacao, OG_Estimado, FG_Estimado, tempo_fermentacao, tempo_maturacao) VALUES ('$nome', '$volume', '$abv', '$Amargor', '$cor', '$mostura', '$lavagem', '$fervura', '$fermentacao', '$og_rec', '$fg_rec', '$temp_ferm', '$tempo_mat')";
+  $stmt = $pdo->prepare($sql);
+  $success = $stmt->execute();
+
+  if($success && $_POST['Nome'] != "" && $_POST['Volume'] != "" && $_POST['ABV'] != "" && $_POST['Amargor'] != "" && $_POST['cor'] != "" && $_POST['mostura'] != "" && $_POST['lavagem'] != "" && $_POST['fervura'] != "" && $_POST['fermentacao'] != "" && $_POST['og_rec'] != "" && $_POST['fg_rec'] != "" && $_POST['temp_ferm'] != "" && $_POST['tempo_mat'] != ""){
+    echo "<script>alert('Cadastro realizado com sucesso!');</script>";
+  }else{
+    echo "<script>alert('Erro ao cadastrar receita!');</script>";
+  }
+} 
+
+?>
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +42,7 @@
   <header>
     <nav class="navbar bg-light fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="../HomePage.html">PCP Barten</a>
+        <a class="navbar-brand" href="../HomePage.php">PCP Barten</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,31 +54,31 @@
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../HomePage.html">Início</a>
+                <a class="nav-link active" aria-current="page" href="../HomePage.php">Início</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.html">Usuários</a>
+                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.php">Usuários</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="producao.html">Produção</a>
+                <a class="nav-link active" aria-current="page" href="producao.php">Produção</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../receitas/receitas.html">Receitas</a>
+                <a class="nav-link active" aria-current="page" href="../receitas/receitas.php">Receitas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.html">Pedidos</a>
+                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.php">Pedidos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.html">Matéria Prima</a>
+                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.php">Matéria Prima</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../estoque/estoque.html">Estoque</a>
+                <a class="nav-link active" aria-current="page" href="../estoque/estoque.php">Estoque</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../inventario/inventario.html">Inventário</a>
+                <a class="nav-link active" aria-current="page" href="../inventario/inventario.php">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.html">Sair</a>
+                <a class="nav-link disable" aria-current="page" href="../Index.php">Sair</a>
               </li>
             </ul>
           </div>

@@ -1,5 +1,6 @@
+
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +10,7 @@
   <header>
     <nav class="navbar bg-light fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="../HomePage.html">PCP Barten</a>
+        <a class="navbar-brand" href="../HomePage.php">PCP Barten</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,31 +22,31 @@
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../HomePage.html">Início</a>
+                <a class="nav-link active" aria-current="page" href="../HomePage.php">Início</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.html">Usuários</a>
+                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.php">Usuários</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../producao/producao.html">Produção</a>
+                <a class="nav-link active" aria-current="page" href="../producao/producao.php">Produção</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../receitas/receitas.html">Receitas</a>
+                <a class="nav-link active" aria-current="page" href="../receitas/receitas.php">Receitas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.html">Pedidos</a>
+                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.php">Pedidos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.html">Matéria Prima</a>
+                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.php">Matéria Prima</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../estoque/estoque.html">Estoque</a>
+                <a class="nav-link active" aria-current="page" href="../estoque/estoque.php">Estoque</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../inventario/inventario.html">Inventário</a>
+                <a class="nav-link active" aria-current="page" href="../inventario/inventario.php">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.html">Sair</a>
+                <a class="nav-link disable" aria-current="page" href="../Index.php">Sair</a>
               </li>
             </ul>
           </div>
@@ -62,28 +63,28 @@
 
       <div class="caixa w-100">
           <div>
-              <a href="receitas_criar.html" class="btn btn-lg btn-outline-dark">  
+              <a href="receitas_criar.php" class="btn btn-lg btn-outline-dark">  
               Adicionar 
               <img class="mt-3" src="/img/adicionar.png"/>
             </a>
           </div>
 
           <div>
-            <a href="receitas_consultar.html" class="btn btn-lg btn-outline-dark">  
+            <a href="receitas_consultar.php" class="btn btn-lg btn-outline-dark">  
             Consultar
             <img class="mt-3" src="/img/Visualizar.png"/>
           </a>
           </div>
         
           <div>
-              <a href="receitas_atualizar.html" class="btn btn-lg btn-outline-dark">  
+              <a href="receitas_atualizar.php" class="btn btn-lg btn-outline-dark">  
               Atualizar
               <img class="mt-3" src="/img/editar.png" />
             </a>
           </div>
 
           <div>
-            <a href="receitas_deletar.html" class="btn btn-lg btn-outline-dark">  
+            <a href="receitas_deletar.php" class="btn btn-lg btn-outline-dark">  
             Deletar
             <img class="mt-3" src="/img/deletar.png" />
           </a>
