@@ -1,10 +1,10 @@
 <?php
 session_start();
 include_once("../conexao.php");
-//error_reporting(0);
-//ini_set('display_errors', 0);
+error_reporting(0);
+ini_set('display_errors', 0);
 
-// pegando o valor do idTipo_cerveja para inserir na tabela lote
+  // pegando o valor do idTipo_cerveja para inserir na tabela lote
   $cliente = "";
   $produto = "";
   $quantidade = "";
@@ -14,38 +14,33 @@ include_once("../conexao.php");
 //verificando se o botão consultar foi clicado"
 if(isset($_POST['consultar'])){
 
-  // concatenado % para fazer a consulta com o like
+ // concatenado % para fazer a consulta com o like
   $nome = $_POST['consultar'].'%';
   $sql = "SELECT * FROM pedidos WHERE cliente like :nome";
   $stmt = $pdo->prepare($sql);
   $stmt->bindParam(':nome', $nome);
   $stmt->execute();
   $usuario = $stmt->fetch();
-
 // atribuindo valores do bd para preencher no input
   if($usuario != null){
-    $cliente = $usuario["cliente"];
-    $produto = $usuario["produto"];
-    $quantidade = $usuario["quantidade"];
-    $data_pedido = $usuario["data_pedido"];
-    $data_entrega = $usuario["data_entrega"];
+    $cliente = $usuario["Cliente"];
+    $produto = $usuario["Produto"];
+    $quantidade = $usuario["Quantidade"];
+    $data_pedido = $usuario["Data_pedido"];
+    $data_entrega = $usuario["Data_entrega"];
   }
   if(empty($usuario) && $_POST['consultar'] != ""){
-    echo "<script>alert('Produção não encontrada!');</script>";
+    echo "<script>alert('Pedido não encontrado!');</script>";
   }
 }
-//
 
-// parei aqui
-
-// 
 if(isset($_POST["botao_apagar"])){
-  $lote = $_POST["lote"];
-  $sql = "DELETE FROM lote WHERE lote = '$lote'";
+  $cliente = $_POST["cliente"];
+  $sql = "DELETE FROM pedidos WHERE Cliente = '$cliente'";
   $stmt = $pdo->prepare($sql);
   $stmt->execute();
   if($stmt->rowCount() > 0){
-    echo "<script>alert('Receita deletada com sucesso!');</script>";
+    echo "<script>alert('Pedido deletado com sucesso!');</script>";
   }
 }
 
@@ -115,52 +110,50 @@ if(isset($_POST["botao_apagar"])){
         <h2 class="titulo2">Deletar</h2>
               
       </div>
-
     
       <form action="" method="post">
         <div class="infos">
-          <label for="consultar">Cliente:
-            <input value = "<?php echo $cliente ?>" size="25px" type="search" id = "consultar" name = "consultar" placeholder="Joao" style="text-align: center;" autofocus>
+          <label for="consultar">Nome:
+            <input value = "<?php echo $cliente ?>" size="25px" type="search" id = "consultar" name = "consultar" placeholder="José" style="text-align: center;" autofocus>
             <button>Buscar</button>
           </label>
         </div>
       </form>
      
       <form method="post" action="" class="caixa">
-          
-      <form method="post" action="" class="caixa">
-      <div class="infos">
-        <label for="cliente">Cliente:
-          <input value ="<?php echo $cliente ?>" type="text" id="cliente" name="cliente">
-        </label>
-      </div>
+        <div class="infos">
+          <label for="cliente">Cliente:
+            <input value ="<?php echo $cliente ?>" type="text" id="cliente" name="cliente">
+          </label>
+        </div>
 
-      <div class="infos">
-        <label for="produto">Produto:
-          <input type="text" id="produto" name="produto">
-        </label>
-      </div>
+        <div class="infos">
+          <label for="produto">Produto:
+            <input value ="<?php echo $produto ?>" type="text" id="produto" name="produto">
+          </label>
+        </div>
 
-      <div class="infos">
-        <label for="quantidade">Quantidade:
-          <input type="text" id="quantidade" name="quantidade">
-        </label>
-      </div>
+        <div class="infos">
+          <label for="quantidade">Quantidade:
+            <input value ="<?php echo $quantidade ?>" type="text" id="quantidade" name="quantidade">
+          </label>
+        </div>
 
-      <div class="infos">
-        <label for="data_pedido">Data Pedido:
-          <input type="datetime-local" id="data_pedido" name="data_pedido">
-        </label>
-      </div>
-      <div class="infos">
-        <label for="data_entrega">Data Entrega:
-          <input type="datetime-local" id="data_entrega" name="data_entrega">
-        </label>
-      </div>
+        <div class="infos">
+          <label for="data_pedido">Data Pedido:
+            <input value ="<?php echo $data_pedido ?>" type="datetime-local" id="data_pedido" name="data_pedido">
+          </label>
+        </div>
+        <div class="infos">
+          <label for="data_entrega">Data Entrega:
+            <input value ="<?php echo $data_entrega ?>" type="datetime-local" id="data_entrega" name="data_entrega">
+          </label>
+        </div>
 
         <div class="container-fluid mt-3">
-          <input class="btn btn-lg btn-danger" type="submit" value="Apagar">
+          <input class="btn btn-lg btn-danger" type="submit" id="botao_apagar" name="botao_apagar" value="Apagar">
         </div>
+      </form>
 
       </div>
       
