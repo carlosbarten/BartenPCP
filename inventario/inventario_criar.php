@@ -1,5 +1,31 @@
+<?php
+session_start();
+include_once("../conexao.php");
+//error_reporting(0);
+//ini_set('display_errors', 0);
+
+//Logica inserção na tabela pedidos
+if(isset($_POST['nome']) && isset($_POST['tipo']) && isset($_POST['quantidade']) && isset($_POST['valor'])){
+
+  $nome = $_POST['nome'];
+  $tipo = $_POST['tipo'];
+  $quantidade = $_POST['quantidade'];
+  $valor = $_POST['valor'];
+  $sql = "INSERT INTO inventario (nome, tipo, quantidade, valor) VALUES ('$nome', '$tipo', '$quantidade', '$valor')";
+  $stmt = $pdo->prepare($sql);
+  $success = $stmt->execute();
+
+  if($success && $_POST['nome'] != "" && $_POST['tipo'] != "" && $_POST['quantidade'] != "" && $_POST['valor'] != ""){
+    echo "<script>alert('Ativo cadastrado com sucesso!');</script>";
+  }else{
+    echo "<script>alert('Erro ao cadastrar Ativo!');</script>";
+  }
+} 
+
+?>
+
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +35,7 @@
   <header>
     <nav class="navbar bg-light fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="../HomePage.html">PCP Barten</a>
+        <a class="navbar-brand" href="../HomePage.php">PCP Barten</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,31 +47,31 @@
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../HomePage.html">Início</a>
+                <a class="nav-link active" aria-current="page" href="../HomePage.php">Início</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.html">Usuários</a>
+                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.php">Usuários</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="producao.html">Produção</a>
+                <a class="nav-link active" aria-current="page" href="producao.php">Produção</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../receitas/receitas.html">Receitas</a>
+                <a class="nav-link active" aria-current="page" href="../receitas/receitas.php">Receitas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.html">Pedidos</a>
+                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.php">Pedidos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.html">Matéria Prima</a>
+                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.php">Matéria Prima</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../estoque/estoque.html">Estoque</a>
+                <a class="nav-link active" aria-current="page" href="../estoque/estoque.php">Estoque</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../inventario/inventario.html">Inventário</a>
+                <a class="nav-link active" aria-current="page" href="../inventario/inventario.php">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.html">Sair</a>
+                <a class="nav-link disable" aria-current="page" href="../Index.php">Sair</a>
               </li>
             </ul>
           </div>
@@ -66,32 +92,36 @@
   
     <form method="post" action="" class="caixa">
       <div class="infos">
-        <label for="og_prod">Nome:
-          <input type="text" id="og_prod" name="og_prod">
+        <label for="nome">Nome:
+          <input type="text" id="nome" name="nome">
         </label>
       </div>
 
       <div class="infos">
-        <label for="og_prod">Tipo:
-          <input type="text" id="og_prod" name="og_prod">
+        <label for="tipo">Tipo:
+          <select name="tipo" id="tipo" style="width: 185px; text-align: center">
+            <option value="Produção">Produção</option>
+            <option value="Armazenamento">Armazenamento</option>
+            <option value="Venda">Venda</option>
+          </select>
         </label>
       </div>
 
       <div class="infos">
-        <label for="fg_prod">Quantidade:
-          <input type="text" id="fg_prod" name="fg_prod">
+        <label for="quantidade">Quantidade:
+          <input type="text" id="quantidade" name="quantidade">
         </label>
       </div>
 
       <div class="infos">
-        <label for="fg_prod">Valor:
-          <input type="text" id="fg_prod" name="fg_prod">
+        <label for="valor">Valor:
+          <input type="text" id="valor" name="valor">
         </label>
       </div>
           
       
       <div class="container-fluid mt-3">
-        <input class="btn btn-lg btn-primary" type="submit" style="background-color: green; border: green;" value="Salvar">
+        <input class="btn btn-lg btn-primary" type="submit" style="background-color: green; border: green;" name="salvar" id="salvar" value="Salvar">
       </div>  
     </form>
       
