@@ -1,5 +1,55 @@
+// entender como vai funcionar ainda
+
+<?php
+  session_start();
+  include_once("../conexao.php");
+  error_reporting(0);
+  ini_set('display_errors', 0);
+
+// pegando o valor do idTipo_cerveja para inserir na tabela lote
+$nome_lote = '';
+$id_lote;
+//verificando se o botão consultar foi clicado
+if(isset($_POST['consultar'])){
+
+  // concatenado % para fazer a consulta com o like
+  $nome = $_POST['consultar'].'%';
+  $sql = "SELECT * FROM lote WHERE lote like :nome";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':nome', $nome);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
+
+// atribuindo valores do bd para preencher no input
+  if($usuario != null){
+    $nome_lote = $usuario["lote"];
+    $id_lote= $usuario["idLote"];
+  }
+  if(empty($usuario) && $_POST['consultar'] != ""){
+    echo "<script>alert('lote não encontrado!');</script>";
+  }
+}
+
+//Logica deletar na tabela produto_acabado
+if(isset($_POST['tipo']) && isset($_POST['qtd'])){
+
+  $id_lote = $_POST['id_lote_hold'];
+  $sql = "INSERT INTO produto_acabado (tipo_embalagem, quantidade, idlote) VALUES ('$tipo', '$qtd', '$id_lote')";
+  $stmt = $pdo->prepare($sql);
+  $success = $stmt->execute();
+
+  if($success && $_POST['tipo'] != "" && $_POST['qtd'] != ""){
+    echo "<script>alert('Estoque cadastrado com sucesso!');</script>";
+  }else{
+    echo "<script>alert('Erro ao cadastrar estoque!');</script>";
+  }
+} 
+
+  ?>
+
+
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +59,7 @@
   <header>
     <nav class="navbar bg-light fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="../HomePage.html">PCP Barten</a>
+        <a class="navbar-brand" href="../HomePage.php">PCP Barten</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,31 +71,31 @@
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../HomePage.html">Início</a>
+                <a class="nav-link active" aria-current="page" href="../HomePage.php">Início</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.html">Usuários</a>
+                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.php">Usuários</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="producao.html">Produção</a>
+                <a class="nav-link active" aria-current="page" href="producao.php">Produção</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../receitas/receitas.html">Receitas</a>
+                <a class="nav-link active" aria-current="page" href="../receitas/receitas.php">Receitas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.html">Pedidos</a>
+                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.php">Pedidos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.html">Matéria Prima</a>
+                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.php">Matéria Prima</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../estoque/estoque.html">Estoque</a>
+                <a class="nav-link active" aria-current="page" href="../estoque/estoque.php">Estoque</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../inventario/inventario.html">Inventário</a>
+                <a class="nav-link active" aria-current="page" href="../inventario/inventario.php">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.html">Sair</a>
+                <a class="nav-link disable" aria-current="page" href="../Index.php">Sair</a>
               </li>
             </ul>
           </div>
@@ -65,12 +115,14 @@
 
       <div class="caixa">
 
+        <form action="" method="post">
         <div class="infos">
-          <label for="tipo">Tipo:
-            <input size="25px" type="search" id = "tipo" name = "tipo" placeholder="Barril 50L" style="text-align: center;" autofocus>
+          <label for="consultar">Lote:
+            <input value = "<?php echo $nome_lote ?>" size="25px" type="search" id = "consultar" name = "consultar" placeholder="I01" style="text-align: center;" autofocus>
             <button>Buscar</button>
           </label>
         </div>
+      </form>
   
         <div class="infos">
           <label for="tipo">Tipo:

@@ -4,22 +4,43 @@ include_once("../conexao.php");
 error_reporting(0);
 ini_set('display_errors', 0);
 
-//Logica inserção na tabela pedidos
-if(isset($_POST['cliente']) && isset($_POST['produto']) && isset($_POST['quantidade']) && isset($_POST['data_pedido']) && isset($_POST['data_entrega'])){
+// pegando o valor do idTipo_cerveja para inserir na tabela lote
+$nome_lote = '';
+$id_lote;
+//verificando se o botão consultar foi clicado
+if(isset($_POST['consultar'])){
 
-  $cliente = $_POST['cliente'];
-  $produto = $_POST['produto'];
-  $quantidade = $_POST['quantidade'];
-  $data_pedido = $_POST['data_pedido'];
-  $data_entrega = $_POST['data_entrega'];
-  $sql = "INSERT INTO pedidos (cliente, produto, quantidade, data_pedido, data_entrega) VALUES ('$cliente', '$produto', '$quantidade', '$data_pedido', '$data_entrega')";
+  // concatenado % para fazer a consulta com o like
+  $nome = $_POST['consultar'].'%';
+  $sql = "SELECT * FROM lote WHERE lote like :nome";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':nome', $nome);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
+
+// atribuindo valores do bd para preencher no input
+  if($usuario != null){
+    $nome_lote = $usuario["lote"];
+    $id_lote= $usuario["idLote"];
+  }
+  if(empty($usuario) && $_POST['consultar'] != ""){
+    echo "<script>alert('lote não encontrado!');</script>";
+  }
+}
+//Logica inserção na tabela produto_acabado
+if(isset($_POST['tipo']) && isset($_POST['qtd'])){
+
+  $tipo = $_POST['tipo'];
+  $qtd = $_POST['qtd'];
+  $id_lote = $_POST['id_lote_hold'];
+  $sql = "INSERT INTO produto_acabado (tipo_embalagem, quantidade, idlote) VALUES ('$tipo', '$qtd', '$id_lote')";
   $stmt = $pdo->prepare($sql);
   $success = $stmt->execute();
 
-  if($success && $_POST['cliente'] != "" && $_POST['produto'] != "" && $_POST['quantidade'] != "" && $_POST['data_pedido'] != "" && $_POST['data_entrega'] != "" ){
-    echo "<script>alert('Pedido cadastrado com sucesso!');</script>";
+  if($success && $_POST['tipo'] != "" && $_POST['qtd'] != ""){
+    echo "<script>alert('Estoque cadastrado com sucesso!');</script>";
   }else{
-    echo "<script>alert('Erro ao cadastrar pedido!');</script>";
+    echo "<script>alert('Erro ao cadastrar estoque!');</script>";
   }
 } 
 
@@ -30,7 +51,7 @@ if(isset($_POST['cliente']) && isset($_POST['produto']) && isset($_POST['quantid
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Pedidos - Novo</title>
+    <title>Estoque - Novo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   </head>
   <header>
@@ -84,46 +105,38 @@ if(isset($_POST['cliente']) && isset($_POST['produto']) && isset($_POST['quantid
   <main class="container">
   <div class="d-flex flex-wrap mt-3 flex-column">
     <div class="w-100 my-4 mt-0">
-      <h1 class="titulo text-center">Pedidos</h1>
+      <h1 class="titulo text-center">Estoque</h1>
       <div align="center"><hr width="60px" noshade></div>
       <h2 class="titulo2">Novo registro</h2>
             
     </div>
 
+    <form action="" method="post" class="caixa">
+        <div class="infos">
+          <label for="consultar">Lote:
+            <input value = "<?php echo $nome_lote ?>" size="13px" type="search" id = "consultar" name = "consultar" placeholder="I01" style="text-align: center;" autofocus>
+            <button>Buscar</button>
+          </label>
+        </div>
+      </form>
   
     <form method="post" action="" class="caixa">
       <div class="infos">
-        <label for="cliente">Cliente:
-          <input type="text" id="cliente" name="cliente">
+        <label for="tipo">Tipo:
+          <input type="text" id="tipo" name="tipo">
         </label>
       </div>
 
       <div class="infos">
-        <label for="produto">Produto:
-          <input type="text" id="produto" name="produto">
+        <label for="qtd">Quantidade:
+          <input type="number" id="qtd" name="qtd">
         </label>
       </div>
 
-      <div class="infos">
-        <label for="quantidade">Quantidade:
-          <input type="text" id="quantidade" name="quantidade">
-        </label>
-      </div>
-
-      <div class="infos">
-        <label for="data_pedido">Data Pedido:
-          <input type="datetime-local" id="data_pedido" name="data_pedido">
-        </label>
-      </div>
-      <div class="infos">
-        <label for="data_entrega">Data Entrega:
-          <input type="datetime-local" id="data_entrega" name="data_entrega">
-        </label>
-      </div>
-      
-      
-      <div class="container-fluid mt-3">
-        <input class="btn btn-lg btn-primary" type="submit" style="background-color: green; border: green;" value="Salvar">
+      <input value = "<?php echo $id_lote ?>" type="text" name="id_lote_hold" id="id_lote_hold" hidden>
+            
+      <div class="container-fluid mt-3 mb-4">
+        <input class="btn btn-lg btn-primary" type="submit" style="background-color: green; border: green;" name="salvar" id="salvar" value="Salvar">
       </div>  
     </form>
       
@@ -178,10 +191,11 @@ if(isset($_POST['cliente']) && isset($_POST['produto']) && isset($_POST['quantid
   display: flex;
   justify-content: center;
   width: 600px;
-  height: 600px;
+  min-height: 600px;
   margin-top: 100px;
   background-color: rgb(253, 240, 240);
   border-radius: 10px;
+  margin-bottom: 50px;
   }
 
   .caixa{
