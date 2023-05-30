@@ -1,5 +1,52 @@
+<?php
+session_start();
+include_once("../conexao.php");
+error_reporting(0);
+ini_set('display_errors', 0);
+
+  $nomeconsulta = "";
+  $qtdconsulta = "";
+  $un_med_consulta = "";
+  $valorconsulta = "";
+
+//verificando se o botão consultar foi clicado
+if(isset($_POST['consultar'])){
+
+  // concatenado % para fazer a consulta com o like
+  $nome = $_POST['consultar'].'%';
+  $sql = "SELECT * FROM ingredientes WHERE nome like :nome";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':nome', $nome);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
+
+// atribuindo valores do bd para preencher no input
+  $nomeconsulta = $usuario["nome"];
+  $qtdconsulta = $usuario["quantidade"];
+  $un_med_consulta = $usuario["unidade_medida"];
+  $valorconsulta = $usuario["valor_unitario"];
+}
+  #se consulta estiver vazia, exibe mensagem de erro
+    if(empty($usuario) && $_POST['consultar'] != ''){
+      echo "<script>alert('Item não encontrado!');</script>";
+    }
+
+  if(isset($_POST['apagar'])){
+    $nome = $_POST['nomeoculto'];
+    $sql = "DELETE FROM ingredientes WHERE nome = :nome";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':nome', $nome);
+    $stmt->execute();
+    $usuario = $stmt->fetch();
+    if($stmt->rowCount() > 0){
+      echo "<script>alert('Item deletado com sucesso!');</script>";
+    }
+  }
+
+?>
+
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +56,7 @@
   <header>
     <nav class="navbar bg-light fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="../HomePage.html">PCP Barten</a>
+        <a class="navbar-brand" href="../HomePage.php">PCP Barten</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,31 +68,31 @@
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../HomePage.html">Início</a>
+                <a class="nav-link active" aria-current="page" href="../HomePage.php">Início</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.html">Usuários</a>
+                <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.php">Usuários</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="producao.html">Produção</a>
+                <a class="nav-link active" aria-current="page" href="producao.php">Produção</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../receitas/receitas.html">Receitas</a>
+                <a class="nav-link active" aria-current="page" href="../receitas/receitas.php">Receitas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.html">Pedidos</a>
+                <a class="nav-link active" aria-current="page" href="../pedidos/pedidos.php">Pedidos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.html">Matéria Prima</a>
+                <a class="nav-link active" aria-current="page" href="../materia_prima/materia_prima.php">Matéria Prima</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../estoque/estoque.html">Estoque</a>
+                <a class="nav-link active" aria-current="page" href="../estoque/estoque.php">Estoque</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../inventario/inventario.html">Inventário</a>
+                <a class="nav-link active" aria-current="page" href="../inventario/inventario.php">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.html">Sair</a>
+                <a class="nav-link disable" aria-current="page" href="../Index.php">Sair</a>
               </li>
             </ul>
           </div>
@@ -64,40 +111,44 @@
       </div>
 
     
-      <div class="infos">
-        <label for="consultar">Nome:
-          <input size="25px" type="search" id = "consultar" name = "consultar" placeholder="Malte Pilsen" style="text-align: center;" autofocus>
-          <button>Buscar</button>
-        </label>
-      </div>
+      <form action="" method="post">
+        <div class="infos">
+          <label for="consultar">Nome:
+            <input value = "<?php echo $nomeconsulta ?>" size="25px" type="search" id = "consultar" name = "consultar" placeholder="B05" style="text-align: center;" autofocus>
+            <button>Buscar</button>
+          </label>
+        </div>
+      </form>
      
       <form method="post" action="" class="caixa">
           
         <div class="infos">
-          <label for="og_prod">Nome:
-            <input type="text" id="og_prod" name="og_prod" disabled>
+          <label for="nomeconsulta">Nome:
+            <input value = "<?php echo $nomeconsulta ?>" type="text" id="nomeconsulta" name="nomeconsulta" disabled>
           </label>
         </div>
   
         <div class="infos">
-          <label for="fg_prod">Quantidade:
-            <input type="text" id="fg_prod" name="fg_prod" disabled>
+          <label for="qtdconsulta">Quantidade:
+            <input value = "<?php echo $qtdconsulta ?>" type="text" id="qtdconsulta" name="qtdconsulta" disabled>
           </label>
         </div>
         <div class="infos">
-          <label for="og_prod">Unidade <br> de Medida:
-            <input type="text" id="og_prod" name="og_prod" disabled>
+          <label for="un_med_consulta">Unidade <br> de Medida:
+            <input value = "<?php echo $un_med_consulta ?>" type="text" id="un_med_consulta" name="un_med_consulta" disabled>
           </label>
         </div>
   
         <div class="infos">
-          <label for="fg_prod">Valor unitário:
-            <input type="text" id="fg_prod" name="fg_prod" disabled>
+          <label for="valorconsulta">Valor unitário:
+            <input value = "<?php echo $valorconsulta ?>" type="text" id="valorconsulta" name="valorconsulta" disabled>
           </label>
         </div>
 
+        <input type="text" value= "<?php echo $nomeconsulta ?>" name="nomeoculto" id="nomeoculto" hidden>
+
         <div class="container-fluid mt-3">
-          <input class="btn btn-lg btn-danger" type="submit" value="Apagar">
+          <input class="btn btn-lg btn-danger" id="apagar" name="apagar" type="submit" value="Apagar">
         </div>
 
       </div>

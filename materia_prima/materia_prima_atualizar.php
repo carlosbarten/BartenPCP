@@ -1,26 +1,50 @@
 <?php
 session_start();
 include_once("../conexao.php");
-//error_reporting(0);
-//ini_set('display_errors', 0);
+error_reporting(0);
+ini_set('display_errors', 0);
 
-//Logica inserção na tabela pedidos
-if(isset($_POST['nome']) && isset($_POST['tipo']) && isset($_POST['quantidade']) && isset($_POST['valor'])){
+  $nomeconsulta = "";
+  $qtdconsulta = "";
+  $un_med_consulta = "";
+  $valorconsulta = "";
 
-  $nome = $_POST['nome'];
-  $tipo = $_POST['tipo'];
-  $quantidade = $_POST['quantidade'];
-  $valor = $_POST['valor'];
-  $sql = "INSERT INTO inventario (nome, tipo, quantidade, valor) VALUES ('$nome', '$tipo', '$quantidade', '$valor')";
+//verificando se o botão consultar foi clicado
+if(isset($_POST['consultar'])){
+
+  // concatenado % para fazer a consulta com o like
+  $nome = $_POST['consultar'].'%';
+  $sql = "SELECT * FROM ingredientes WHERE nome like :nome";
   $stmt = $pdo->prepare($sql);
-  $success = $stmt->execute();
+  $stmt->bindParam(':nome', $nome);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
 
-  if($success && $_POST['nome'] != "" && $_POST['tipo'] != "" && $_POST['quantidade'] != "" && $_POST['valor'] != ""){
-    echo "<script>alert('Ativo cadastrado com sucesso!');</script>";
-  }else{
-    echo "<script>alert('Erro ao cadastrar Ativo!');</script>";
+// atribuindo valores do bd para preencher no input
+  $nomeconsulta = $usuario["nome"];
+  $qtdconsulta = $usuario["quantidade"];
+  $un_med_consulta = $usuario["unidade_medida"];
+  $valorconsulta = $usuario["valor_unitario"];
+}
+  #se consulta estiver vazia, exibe mensagem de erro
+    if(empty($usuario) && $_POST['consultar'] != ''){
+      echo "<script>alert('Item não encontrado!');</script>";
+    }
+
+  if(isset($_POST['salvar'])){
+    $nome = $_POST['nomeoculto'];
+    $nome_novo = $_POST['nomeconsulta'];
+    $qtd = $_POST['qtdconsulta'];
+    $un_med = $_POST['un_med_consulta'];
+    $valor = $_POST['valorconsulta'];
+    $sql = "UPDATE ingredientes SET nome = '$nome_novo', quantidade = '$qtd', unidade_medida = '$un_med', valor_unitario = $valor WHERE nome = :nome";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':nome', $nome);
+    $stmt->execute();
+    if($stmt->rowCount() > 0){
+      echo "<script>alert('Matéria prima atualizada com sucesso!');</script>";
+    }
   }
-} 
 
 ?>
 
@@ -29,7 +53,7 @@ if(isset($_POST['nome']) && isset($_POST['tipo']) && isset($_POST['quantidade'])
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Inventário - Novo</title>
+    <title>Matéria Prima - Atualizar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   </head>
   <header>
@@ -53,7 +77,7 @@ if(isset($_POST['nome']) && isset($_POST['tipo']) && isset($_POST['quantidade'])
                 <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.php">Usuários</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="../producao/producao.php">Produção</a>
+                <a class="nav-link active" aria-current="page" href="producao.php">Produção</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="../receitas/receitas.php">Receitas</a>
@@ -81,54 +105,60 @@ if(isset($_POST['nome']) && isset($_POST['tipo']) && isset($_POST['quantidade'])
   </header>
 
   <main class="container">
-  <div class="d-flex flex-wrap mt-3 flex-column">
-    <div class="w-100 my-4 mt-0">
-      <h1 class="titulo text-center">Inventário</h1>
-      <div align="center"><hr width="60px" noshade></div>
-      <h2 class="titulo2">Novo registro</h2>
-            
-    </div>
-
-  
-    <form method="post" action="" class="caixa">
-      <div class="infos">
-        <label for="nome">Nome:
-          <input type="text" id="nome" name="nome">
-        </label>
+    <div class="d-flex flex-wrap mt-3 flex-column">
+      <div class="w-100 my-4 mt-0">
+        <h1 class="titulo text-center">Matéria Prima</h1>
+        <div align="center"><hr width="60px" noshade></div>
+        <h2 class="titulo2">Atualizar registro</h2>
+              
       </div>
-
-      <div class="infos">
-        <label for="tipo">Tipo:
-          <select name="tipo" id="tipo" style="width: 185px; text-align: center">
-            <option value="Produção">Produção</option>
-            <option value="Armazenamento">Armazenamento</option>
-            <option value="Venda">Venda</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="infos">
-        <label for="quantidade">Quantidade:
-          <input type="text" id="quantidade" name="quantidade">
-        </label>
-      </div>
-
-      <div class="infos">
-        <label for="valor">Valor:
-          <input type="text" id="valor" name="valor">
-        </label>
-      </div>
+      
+      <form action="" method="post">
+        <div class="infos">
+          <label for="consultar">Nome:
+            <input value = "<?php echo $nomeconsulta ?>" size="25px" type="search" id = "consultar" name = "consultar" placeholder="B05" style="text-align: center;" autofocus>
+            <button>Buscar</button>
+          </label>
+        </div>
+      </form>
+     
+      <form method="post" action="" class="caixa">
           
-      
-      <div class="container-fluid mt-3">
-        <input class="btn btn-lg btn-primary" type="submit" style="background-color: green; border: green;" name="salvar" id="salvar" value="Salvar">
-      </div>  
-    </form>
-      
-  </div>
+        <div class="infos">
+          <label for="nomeconsulta">Nome:
+            <input value = "<?php echo $nomeconsulta ?>" type="text" id="nomeconsulta" name="nomeconsulta" >
+          </label>
+        </div>
+  
+        <div class="infos">
+          <label for="qtdconsulta">Quantidade:
+            <input value = "<?php echo $qtdconsulta ?>" type="text" id="qtdconsulta" name="qtdconsulta" >
+          </label>
+        </div>
+        <div class="infos">
+          <label for="un_med_consulta">Unidade <br> de Medida:
+            <input value = "<?php echo $un_med_consulta ?>" type="text" id="un_med_consulta" name="un_med_consulta" >
+          </label>
+        </div>
+  
+        <div class="infos">
+          <label for="valorconsulta">Valor unitário:
+            <input value = "<?php echo $valorconsulta ?>" type="text" id="valorconsulta" name="valorconsulta" >
+          </label>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-  </main>
+        <input type="text" value= "<?php echo $nomeconsulta ?>" name="nomeoculto" id="nomeoculto" hidden>
+
+        <div class="container-fluid mt-3">
+          <input class="btn btn-lg btn-primary" style="background-color: green; border: green;" id="salvar" name="salvar" type="submit" value="Salvar">
+        </div>
+
+      </div>
+        
+    </div>
+  
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    </main>
 
   <footer>
       <div id="footer">

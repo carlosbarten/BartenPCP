@@ -50,7 +50,7 @@ if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['in
                 <a class="nav-link active" aria-current="page" href="../usuarios/usuarios.php">Usuários</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="producao.php">Produção</a>
+                <a class="nav-link active" aria-current="page" href="../producao/producao.php">Produção</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="../receitas/receitas.php">Receitas</a>
