@@ -5,7 +5,7 @@ if(!isset($_SESSION)){
 }
 
 if(!isset($_SESSION['usuario'])){
-  die("Acesso negado. <p><a href='index.php'>Faça login</a></p>");
+  die("Acesso negado. <p><a href='../index.php'>Faça login</a></p>");
 }
 
 ?>

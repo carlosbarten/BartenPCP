@@ -1,5 +1,44 @@
+<?php
+session_start();
+include_once("../protect.php");
+include_once("../conexao.php");
+error_reporting(0);
+ini_set('display_errors', 0);
+
+  // pegando o valor do idTipo_cerveja para inserir na tabela lote
+  $cliente = "";
+  $produto = "";
+  $quantidade = "";
+  $data_pedido = "";
+  $data_entrega = "";
+
+//verificando se o botão consultar foi clicado"
+if(isset($_POST['consultar'])){
+
+ // concatenado % para fazer a consulta com o like
+  $nome = $_POST['consultar'].'%';
+  $sql = "SELECT * FROM pedidos WHERE cliente like :nome";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':nome', $nome);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
+// atribuindo valores do bd para preencher no input
+  if($usuario != null){
+    $cliente = $usuario["Cliente"];
+    $produto = $usuario["Produto"];
+    $quantidade = $usuario["Quantidade"];
+    $data_pedido = $usuario["Data_pedido"];
+    $data_entrega = $usuario["Data_entrega"];
+  }
+  if(empty($usuario) && $_POST['consultar'] != ""){
+    echo "<script>alert('Pedido não encontrado!');</script>";
+  }
+}
+
+?>
+
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,33 +103,34 @@
       </div>
 
     
-      <form method="post" action="" class="caixa">
+      <form action="" method="post" class="caixa">
         <div class="infos">
-          <label for="tipo">Tipo:
-            <input size="25px" type="search" id = "tipo" name = "tipo" placeholder="Barril 50L" style="text-align: center;" autofocus>
+          <label for="consultar">Lote:
+            <input value = "<?php echo $nome_lote ?>" size="13px" type="search" id = "consultar" name = "consultar" placeholder="I01" style="text-align: center;" autofocus>
             <button>Buscar</button>
           </label>
         </div>
+      </form>
   
-        <div class="infos">
-          <label for="tipo">Tipo:
-            <input type="text" id="tipo" name="tipo" disabled>
-          </label>
-        </div>
-  
-        <div class="infos">
-          <label for="qtd">Quantidade:
-            <input type="number" id="qtd" name="qtd" disabled> 
-          </label>
-        </div>
-  
-        <div class="infos">
-          <label for="lote">Lote:
-            <input type="text" id="lote" name="lote" disabled>
-          </label>
-        </div>
-   
+    <form method="post" action="" class="caixa">
+      <div class="infos">
+        <label for="lote">Lote:
+          <input type="text" id="lote" name="lote">
+        </label>
       </div>
+
+      <div class="infos">
+        <label for="tipo">Tipo:
+          <input type="text" id="tipo" name="tipo">
+        </label>
+      </div>
+
+      <div class="infos">
+        <label for="qtd">Quantidade:
+          <input type="number" id="qtd" name="qtd">
+        </label>
+      </div>  
+    </form>
       
     </div>
       
