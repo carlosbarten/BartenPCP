@@ -1,8 +1,8 @@
 <?php
 session_start();
 include_once("../conexao.php");
-error_reporting(0);
-ini_set('display_errors', 0);
+//error_reporting(0);
+//ini_set('display_errors', 0);
 
 // pegando o valor do idTipo_cerveja para inserir na tabela lote
 $nome_lote = '';
@@ -28,16 +28,18 @@ if(isset($_POST['consultar'])){
   }
 }
 //Logica inserção na tabela produto_acabado
-if(isset($_POST['tipo']) && isset($_POST['qtd'])){
+if(isset($_POST['tipo_receita']) && isset($_POST['qtd']) && isset($_POST['tipo_embalagem'])){
 
-  $tipo = $_POST['tipo'];
+  $tipo = $_POST['tipo_receita'].' - '.$_POST['tipo_embalagem'];
+  $tipo_embalagem = $_POST['tipo_embalagem'];
+  $tipo_receita = $_POST['tipo_receita'];
   $qtd = $_POST['qtd'];
   $id_lote = $_POST['id_lote_hold'];
   $sql = "INSERT INTO produto_acabado (tipo_embalagem, quantidade, idlote) VALUES ('$tipo', '$qtd', '$id_lote')";
   $stmt = $pdo->prepare($sql);
   $success = $stmt->execute();
 
-  if($success && $_POST['tipo'] != "" && $_POST['qtd'] != ""){
+  if($success && $_POST['tipo_receita'] != "" && $_POST['qtd'] != ""){
     echo "<script>alert('Estoque cadastrado com sucesso!');</script>";
   }else{
     echo "<script>alert('Erro ao cadastrar estoque!');</script>";
@@ -121,15 +123,31 @@ if(isset($_POST['tipo']) && isset($_POST['qtd'])){
       </form>
   
     <form method="post" action="" class="caixa">
+
+      <div class="infos">
+        <label for="tipo">Embalagem:
+          <select name="tipo_embalagem" id="tipo_embalagem" style="width: 185px; text-align: center">
+            <option value="Barril 50L" <?php if($tipo_embalagem == "Barril 50L") echo 'selected'; ?>>Barril 50L</option>
+            <option value="Barril 30L" <?php if($tipo_embalagem == "Barril 30L") echo 'selected'; ?> >Barril 30L</option>
+            <option value="Garrafa 600ml">Garrafa 600ml</option>
+          </select>
+        </label>
+      </div>
+
       <div class="infos">
         <label for="tipo">Tipo:
-          <input type="text" id="tipo" name="tipo">
+          <select name="tipo_receita" id="tipo_receita" style="width: 185px; text-align: center">
+            <option value="Lager">Lager</option>
+            <option value="IPA">IPA</option>
+            <option value="Weiss">Weiss</option>
+            <option value="Blond Ale">Blond Ale</option>
+          </select>
         </label>
       </div>
 
       <div class="infos">
         <label for="qtd">Quantidade:
-          <input type="number" id="qtd" name="qtd">
+          <input type="number" id="qtd" name="qtd" style="text-align:center;">
         </label>
       </div>
 

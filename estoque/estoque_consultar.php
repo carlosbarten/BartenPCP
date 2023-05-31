@@ -2,36 +2,28 @@
 session_start();
 include_once("../protect.php");
 include_once("../conexao.php");
-error_reporting(0);
-ini_set('display_errors', 0);
+//error_reporting(0);
+//ini_set('display_errors', 0);
 
-  // pegando o valor do idTipo_cerveja para inserir na tabela lote
-  $cliente = "";
-  $produto = "";
-  $quantidade = "";
-  $data_pedido = "";
-  $data_entrega = "";
+$quantidade = '';
 
 //verificando se o botão consultar foi clicado"
 if(isset($_POST['consultar'])){
 
  // concatenado % para fazer a consulta com o like
-  $nome = $_POST['consultar'].'%';
-  $sql = "SELECT * FROM pedidos WHERE cliente like :nome";
+  $nome = $_POST['tipo_receita'].' - '.$_POST['tipo_embalagem'];
+  $sql = "SELECT SUM(quantidade) as total_quantidade FROM produto_acabado WHERE tipo_embalagem like :nome";
   $stmt = $pdo->prepare($sql);
   $stmt->bindParam(':nome', $nome);
   $stmt->execute();
   $usuario = $stmt->fetch();
+
+  //var_dump($usuario) or die();
 // atribuindo valores do bd para preencher no input
-  if($usuario != null){
-    $cliente = $usuario["Cliente"];
-    $produto = $usuario["Produto"];
-    $quantidade = $usuario["Quantidade"];
-    $data_pedido = $usuario["Data_pedido"];
-    $data_entrega = $usuario["Data_entrega"];
-  }
-  if(empty($usuario) && $_POST['consultar'] != ""){
-    echo "<script>alert('Pedido não encontrado!');</script>";
+  if($usuario["total_quantidade"] != null){
+    $quantidade = $usuario["total_quantidade"];
+  }else{
+    echo "<script>alert('Não há registros para " . $nome . " !')</script>";
   }
 }
 
@@ -94,47 +86,53 @@ if(isset($_POST['consultar'])){
   </header>
 
   <main class="container">
-  <div class="d-flex flex-wrap mt-3 flex-column">
+    <div class="d-flex flex-wrap mt-3 flex-column">
+
       <div class="w-100 my-4 mt-0">
         <h1 class="titulo text-center">Estoque</h1>
         <div align="center"><hr width="60px" noshade></div>
         <h2 class="titulo2">Consulta</h2>
               
       </div>
+      
+      <form action="" method="post">
 
-    
-      <form action="" method="post" class="caixa">
+        <label>Escolha o tipo:
+              
+          <div class="infos2">
+            <label>Embalagem:
+              <select name="tipo_embalagem" id="tipo_embalagem" style="width: 185px; text-align: center">
+                <option value="Barril 50L">Barril 50L</option>
+                <option value="Barril 30L">Barril 30L</option>
+                <option value="Garrafa 600ml">Garrafa 600ml</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="infos2">
+            <label>Tipo:
+              <select name="tipo_receita" id="tipo_receita" style="width: 185px; text-align: center">
+                <option value="Lager">Lager</option>
+                <option value="IPA">IPA</option>
+                <option value="Weiss">Weiss</option>
+                <option value="Blond Ale">Blond Ale</option>
+              </select>
+            </label>
+          </div>
+        </label>
         <div class="infos">
-          <label for="consultar">Lote:
-            <input value = "<?php echo $nome_lote ?>" size="13px" type="search" id = "consultar" name = "consultar" placeholder="I01" style="text-align: center;" autofocus>
-            <button>Buscar</button>
-          </label>
+            <button type="submit" class="btn btn-outline-secondary" id="consultar" name="consultar">Buscar</button>
         </div>
       </form>
-  
-    <form method="post" action="" class="caixa">
-      <div class="infos">
-        <label for="lote">Lote:
-          <input type="text" id="lote" name="lote">
-        </label>
-      </div>
-
-      <div class="infos">
-        <label for="tipo">Tipo:
-          <input type="text" id="tipo" name="tipo">
-        </label>
-      </div>
-
+    
       <div class="infos">
         <label for="qtd">Quantidade:
-          <input type="number" id="qtd" name="qtd">
+          <input value="<?php echo $quantidade ?>">
         </label>
       </div>  
-    </form>
       
+
     </div>
-      
-  </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
   </main>
@@ -240,6 +238,21 @@ if(isset($_POST['consultar'])){
     flex-direction: column;
     display: flex;
   }
+
+  .infos2{
+    align-items: end;
+    justify-content: end;
+    margin: 10px;
+    flex-wrap: wrap;
+    flex-direction: column;
+    display: flex;
+  }
+
+  .infos2 > button{
+    align-items: center;
+    justify-content: center;
+  }
+
   </style>
 
 </html>
