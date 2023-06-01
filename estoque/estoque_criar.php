@@ -7,6 +7,8 @@ include_once("../conexao.php");
 // pegando o valor do idTipo_cerveja para inserir na tabela lote
 $nome_lote = '';
 $id_lote;
+$tipo_embalagem = '';
+$tipo_receita = '';
 //verificando se o botão consultar foi clicado
 if(isset($_POST['consultar'])){
 
@@ -129,7 +131,7 @@ if(isset($_POST['tipo_receita']) && isset($_POST['qtd']) && isset($_POST['tipo_e
           <select name="tipo_embalagem" id="tipo_embalagem" style="width: 185px; text-align: center">
             <option value="Barril 50L" <?php if($tipo_embalagem == "Barril 50L") echo 'selected'; ?>>Barril 50L</option>
             <option value="Barril 30L" <?php if($tipo_embalagem == "Barril 30L") echo 'selected'; ?> >Barril 30L</option>
-            <option value="Garrafa 600ml">Garrafa 600ml</option>
+            <option value="Garrafa 600ml" <?php if($tipo_embalagem == "Garrafa 600ml") echo 'selected'; ?>>Garrafa 600ml</option>
           </select>
         </label>
       </div>
@@ -137,10 +139,10 @@ if(isset($_POST['tipo_receita']) && isset($_POST['qtd']) && isset($_POST['tipo_e
       <div class="infos">
         <label for="tipo">Tipo:
           <select name="tipo_receita" id="tipo_receita" style="width: 185px; text-align: center">
-            <option value="Lager">Lager</option>
-            <option value="IPA">IPA</option>
-            <option value="Weiss">Weiss</option>
-            <option value="Blond Ale">Blond Ale</option>
+            <option value="Lager" <?php if($tipo_receita == "Lager") echo 'selected'; ?>>Lager</option>
+            <option value="IPA" <?php if($tipo_receita == "IPA") echo 'selected'; ?>>IPA</option>
+            <option value="Weiss" <?php if($tipo_receita == "Weiss") echo 'selected'; ?>>Weiss</option>
+            <option value="Blond Ale" <?php if($tipo_receita == "Blond Ale") echo 'selected'; ?>>Blond Ale</option>
           </select>
         </label>
       </div>
