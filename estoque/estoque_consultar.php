@@ -104,26 +104,26 @@ if(isset($_POST['consultar'])){
 
         <label>Escolha o tipo:
               
-        <div class="infos2">
-        <label for="tipo">Embalagem:
-          <select name="tipo_embalagem" id="tipo_embalagem" style="width: 185px; text-align: center">
-            <option value="Barril 50L" <?php if($tipo_embalagem == "Barril 50L") echo 'selected'; ?>>Barril 50L</option>
-            <option value="Barril 30L" <?php if($tipo_embalagem == "Barril 30L") echo 'selected'; ?> >Barril 30L</option>
-            <option value="Garrafa 600ml" <?php if($tipo_embalagem == "Garrafa 600ml") echo 'selected'; ?>>Garrafa 600ml</option>
-          </select>
-        </label>
-      </div>
+            <div class="infos2">
+            <label for="tipo">Embalagem:
+              <select name="tipo_embalagem" id="tipo_embalagem" style="width: 185px; text-align: center">
+                <option value="Barril 50L" <?php if($tipo_embalagem == "Barril 50L") echo 'selected'; ?>>Barril 50L</option>
+                <option value="Barril 30L" <?php if($tipo_embalagem == "Barril 30L") echo 'selected'; ?> >Barril 30L</option>
+                <option value="Garrafa 600ml" <?php if($tipo_embalagem == "Garrafa 600ml") echo 'selected'; ?>>Garrafa 600ml</option>
+              </select>
+            </label>
+          </div>
 
-      <div class="infos2">
-        <label for="tipo">Tipo:
-          <select name="tipo_receita" id="tipo_receita" style="width: 185px; text-align: center">
-            <option value="Lager" <?php if($tipo_receita == "Lager") echo 'selected'; ?>>Lager</option>
-            <option value="IPA" <?php if($tipo_receita == "IPA") echo 'selected'; ?>>IPA</option>
-            <option value="Weiss" <?php if($tipo_receita == "Weiss") echo 'selected'; ?>>Weiss</option>
-            <option value="Blond Ale" <?php if($tipo_receita == "Blond Ale") echo 'selected'; ?>>Blond Ale</option>
-          </select>
-        </label>
-      </div>
+          <div class="infos2">
+            <label for="tipo">Tipo:
+              <select name="tipo_receita" id="tipo_receita" style="width: 185px; text-align: center">
+                <option value="Lager" <?php if($tipo_receita == "Lager") echo 'selected'; ?>>Lager</option>
+                <option value="IPA" <?php if($tipo_receita == "IPA") echo 'selected'; ?>>IPA</option>
+                <option value="Weiss" <?php if($tipo_receita == "Weiss") echo 'selected'; ?>>Weiss</option>
+                <option value="Blond Ale" <?php if($tipo_receita == "Blond Ale") echo 'selected'; ?>>Blond Ale</option>
+              </select>
+            </label>
+          </div>
         </label>
         <div class="infos">
             <button type="submit" class="btn btn-outline-secondary" id="consultar" name="consultar">Buscar</button>
