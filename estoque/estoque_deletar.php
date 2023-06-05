@@ -1,8 +1,8 @@
 <?php
   session_start();
   include_once("../conexao.php");
-  error_reporting(0);
-  ini_set('display_errors', 0);
+ // error_reporting(0);
+  //ini_set('display_errors', 0);
 
 // pegando o valor do idTipo_cerveja para inserir na tabela lote
 $nome_lote = '';
@@ -46,6 +46,28 @@ if(isset($_POST['deletar'])){
   }else{
     echo "<script>alert('Erro ao remover estoque!');</script>";
   }
+
+  $sql = "SELECT * FROM produto_acabado WHERE idlote = :id_lote AND tipo_embalagem = :tipo_embalagem";
+  $stmt = $pdo->prepare($sql); 
+  $id_lote = $_POST['id_lote_hold'];
+  $tipo_embalagem = $_POST['tipo_receita'].' - '.$_POST['tipo_embalagem'];
+  $stmt->bindParam(':id_lote', $id_lote);
+  $stmt->bindParam(':tipo_embalagem', $tipo_embalagem);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
+  
+  if($usuario['quantidade'] <= 0){
+    $sql = "DELETE FROM produto_acabado WHERE idlote = :id_lote AND tipo_embalagem = :tipo_embalagem";
+    $stmt = $pdo->prepare($sql); 
+    $id_lote = $_POST['id_lote_hold'];
+    $tipo_embalagem = $_POST['tipo_receita'].' - '.$_POST['tipo_embalagem'];
+    $stmt->bindParam(':id_lote', $id_lote);
+    $stmt->bindParam(':tipo_embalagem', $tipo_embalagem);
+    $stmt->execute();
+    echo "<script>alert('Estoque deste $id_lote e $tipo_embalagem esgotado');</script>";
+  }
+  
+
 }
   ?>
 
