@@ -1,8 +1,9 @@
 <?php
   session_start();
   include_once("../conexao.php");
- // error_reporting(0);
-  //ini_set('display_errors', 0);
+  include('../protect.php');
+  error_reporting(0);
+  ini_set('display_errors', 0);
 
 // pegando o valor do idTipo_cerveja para inserir na tabela lote
 $nome_lote = '';
@@ -119,7 +120,7 @@ if(isset($_POST['deletar'])){
                 <a class="nav-link active" aria-current="page" href="../inventario/inventario.php">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.php">Sair</a>
+                <a class="nav-link disable" aria-current="page" href="../logout.php">Sair</a>
               </li>
             </ul>
           </div>

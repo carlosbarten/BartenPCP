@@ -1,3 +1,7 @@
+<?php
+include('../protect.php');
+?>
+
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -54,7 +58,7 @@
                 ">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.php
+                <a class="nav-link disable" aria-current="page" href="../logout.php
                 ">Sair</a>
               </li>
             </ul>

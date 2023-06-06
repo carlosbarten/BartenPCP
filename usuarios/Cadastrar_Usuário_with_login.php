@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once("../conexao.php");
+include('../protect.php');
 
 if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['inputTelefone']) && isset($_POST['inputSenha'])){
 
@@ -68,7 +69,7 @@ if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['in
                 <a class="nav-link active" aria-current="page" href="../inventario/inventario.php">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.php">Sair</a>
+                <a class="nav-link disable" aria-current="page" href="../logout.php">Sair</a>
               </li>
             </ul>
           </div>

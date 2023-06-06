@@ -81,7 +81,7 @@ if(isset($_POST['consultar'])){
                 <a class="nav-link active" aria-current="page" href="../inventario/inventario.php">Inventário</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disable" aria-current="page" href="../Index.php">Sair</a>
+                <a class="nav-link disable" aria-current="page" href="../logout.php">Sair</a>
               </li>
             </ul>
           </div>
