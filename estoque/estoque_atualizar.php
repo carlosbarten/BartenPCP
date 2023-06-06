@@ -1,5 +1,57 @@
+<?php
+session_start();
+include_once("../conexao.php");
+//error_reporting(0);
+//ini_set('display_errors', 0);
+
+// pegando o valor do idTipo_cerveja para inserir na tabela lote
+$nome_lote = '';
+$id_lote;
+$tipo_embalagem = '';
+$tipo_receita = '';
+//verificando se o botão consultar foi clicado
+if(isset($_POST['consultar'])){
+
+  // concatenado % para fazer a consulta com o like
+  $nome = $_POST['consultar'].'%';
+  $sql = "SELECT * FROM lote WHERE lote like :nome";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':nome', $nome);
+  $stmt->execute();
+  $usuario = $stmt->fetch();
+
+// atribuindo valores do bd para preencher no input
+  if($usuario != null){
+    $nome_lote = $usuario["lote"];
+    $id_lote= $usuario["idLote"];
+  }
+  if(empty($usuario) && $_POST['consultar'] != ""){
+    echo "<script>alert('lote não encontrado!');</script>";
+  }
+}
+//Logica inserção na tabela produto_acabado
+if(isset($_POST['tipo_receita']) && isset($_POST['qtd']) && isset($_POST['tipo_embalagem'])){
+
+  $tipo = $_POST['tipo_receita'].' - '.$_POST['tipo_embalagem'];
+  $tipo_embalagem = $_POST['tipo_embalagem'];
+  $tipo_receita = $_POST['tipo_receita'];
+  $qtd = $_POST['qtd'];
+  $id_lote = $_POST['id_lote_hold'];
+  $sql = "UPDATE produto_acabado SET quantidade='$qtd' WHERE idLote = '$id_lote' AND tipo_embalagem = '$tipo'";
+  $stmt = $pdo->prepare($sql);
+  $success = $stmt->execute();
+  $registro = $stmt->rowCount();
+  if($registro > 0){
+    echo "<script>alert('Estoque atualizado com sucesso!');</script>";
+  }else{
+    echo "<script>alert('Estoque não encontrado, cadastre esse registro primeiro!');</script>";
+  }
+} 
+
+?>
+
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -63,35 +115,50 @@
               
       </div>
       
-      <form method="post" action="" class="caixa">
+      <form action="" method="post" class="caixa">
         <div class="infos">
-          <label for="tipo">Tipo:
-            <input size="25px" type="search" id = "tipo" name = "tipo" placeholder="Barril 50L" style="text-align: center;" autofocus>
+          <label for="consultar">Lote:
+            <input value = "<?php echo $nome_lote ?>" size="13px" type="search" id = "consultar" name = "consultar" placeholder="I01" style="text-align: center;" autofocus>
             <button>Buscar</button>
           </label>
         </div>
-  
-        <div class="infos">
-          <label for="tipo">Tipo:
-            <input type="text" id="tipo" name="tipo">
-          </label>
-        </div>
-  
-        <div class="infos">
-          <label for="qtd">Quantidade:
-            <input type="number" id="qtd" name="qtd">
-          </label>
-        </div>
-  
-        <div class="infos">
-          <label for="lote">Lote:
-            <input type="text" id="lote" name="lote">
-          </label>
-        </div>
-        <div class="container-fluid mt-3 mb-4">
-          <input class="btn btn-lg btn-primary" type="submit" style="background-color: green; border: green;" value="Salvar">
-        </div>
       </form>
+  
+    <form method="post" action="" class="caixa">
+
+      <div class="infos">
+        <label for="tipo">Embalagem:
+          <select name="tipo_embalagem" id="tipo_embalagem" style="width: 185px; text-align: center">
+            <option value="Barril 50L" <?php if($tipo_embalagem == "Barril 50L") echo 'selected'; ?>>Barril 50L</option>
+            <option value="Barril 30L" <?php if($tipo_embalagem == "Barril 30L") echo 'selected'; ?> >Barril 30L</option>
+            <option value="Garrafa 600ml" <?php if($tipo_embalagem == "Garrafa 600ml") echo 'selected'; ?>>Garrafa 600ml</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="infos">
+        <label for="tipo">Tipo:
+          <select name="tipo_receita" id="tipo_receita" style="width: 185px; text-align: center">
+            <option value="Lager" <?php if($tipo_receita == "Lager") echo 'selected'; ?>>Lager</option>
+            <option value="IPA" <?php if($tipo_receita == "IPA") echo 'selected'; ?>>IPA</option>
+            <option value="Weiss" <?php if($tipo_receita == "Weiss") echo 'selected'; ?>>Weiss</option>
+            <option value="Blond Ale" <?php if($tipo_receita == "Blond Ale") echo 'selected'; ?>>Blond Ale</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="infos">
+        <label for="qtd">Quantidade:
+          <input type="number" id="qtd" name="qtd" style="text-align:center;">
+        </label>
+      </div>
+
+      <input value = "<?php echo $id_lote ?>" type="text" name="id_lote_hold" id="id_lote_hold" hidden>
+            
+      <div class="container-fluid mt-3 mb-4">
+        <input class="btn btn-lg btn-primary" type="submit" style="background-color: green; border: green;" name="salvar" id="salvar" value="Salvar">
+      </div>  
+    </form>
         
     </div>
   
