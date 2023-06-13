@@ -20,14 +20,14 @@
       $_SESSION['usuario'] = $usuario;
       header('Location: homepage.php');
     }else{
-      echo "Usuário ou senha inválidos";
+      echo "<script>alert('Usuário ou senha incorretos.');</script>";
     }
   }
 
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,7 +38,7 @@
     <div class="container mt-5">
       <div class="row align-items-center">
         </div class="col-md-10 mx-auto col-lg-5">
-          <form action="" method="POST" class="p-4 p-md-5 border rounded-4 bg-light">
+          <form action="" method="POST" class="container p-4 p-md-5 border rounded-4 bg-light">
             <div class="col-md-10 mx-auto col-lg-5 mb-4">
               <img src="/img/page2.png">
             
@@ -93,8 +93,12 @@
       text-align: center;
       font-family: Arial, Helvetica, sans-serif;
       font-weight: bold;
-      }
-      
+      }      
+      .container {
+    width: 600px;
+    height: 600px;
+    margin-top: 50px;
+    }
   </style>
 
 </html>

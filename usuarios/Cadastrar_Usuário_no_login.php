@@ -13,6 +13,7 @@ if(isset($_POST['inputNome']) && isset($_POST['inputEmail']) && isset($_POST['in
   $success = $stmt->execute();
 
   if($success){
+    echo "<script>alert('Usuário cadastrado com sucesso.');</script>";
     header("Location: ../Index.php");
   }else{
     echo "Erro ao cadastrar usuário";
